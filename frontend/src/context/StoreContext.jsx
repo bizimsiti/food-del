@@ -28,8 +28,9 @@ const StoreContextProvider = (props) => {
     }
     return totalAmount;
   };
-
+  const deliveryFee = getTotalCartAmount() ? 2 : 0;
   const contextValue = {
+    deliveryFee,
     food_list,
     cartItems,
     setCartItems,
