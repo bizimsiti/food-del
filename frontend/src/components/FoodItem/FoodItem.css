@@ -66,6 +66,9 @@
   background-color: white;
 }
 
+.food-item-counter:hover {
+  cursor: pointer;
+}
 .food-item-counter img {
   width: 30px;
 }
