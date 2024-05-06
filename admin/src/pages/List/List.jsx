@@ -8,11 +8,20 @@ const List = () => {
 
   const fetchList = async () => {
     const res = await axios.get(`${url}/api/food/list`);
-    console.log(res.data);
     if (res.data.success) {
       setList(res.data.data);
     } else {
       toast.error("Error");
+    }
+  };
+
+  const removeFood = async (foodId) => {
+    const response = await axios.post(`${url}/api/food/remove`, { id: foodId });
+    await fetchList();
+    if (response.data.success) {
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
     }
   };
 
@@ -31,17 +40,23 @@ const List = () => {
           <b>Price</b>
           <b>Action</b>
         </div>
-        {list.map((item, index) => {
-          return (
-            <div key={index} className="list-table-format">
-              <img src={`${url}/images/` + item.image} alt="" />
-              <p>{item.name}</p>
-              <p>{item.category}</p>
-              <p>${item.price}</p>
-              <p>X</p>
-            </div>
-          );
-        })}
+        {list.length > 0 ? (
+          list.map((item, index) => {
+            return (
+              <div key={index} className="list-table-format item">
+                <img src={`${url}/images/` + item.image} alt="" />
+                <p>{item.name}</p>
+                <p>{item.category}</p>
+                <p>${item.price}</p>
+                <p onClick={() => removeFood(item._id)} className="cross">
+                  X
+                </p>
+              </div>
+            );
+          })
+        ) : (
+          <div className="no-result">No item result. Refresh page!</div>
+        )}
       </div>
     </div>
   );
