@@ -1,11 +1,11 @@
 import { createContext, useEffect, useState } from "react";
-import { food_list } from "../assets/assets";
-
+import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
+  const [foodList, setFoodList] = useState([]);
   const baseUrl = import.meta.env.VITE_BASE_ENDPOINT;
   const addToCart = (itemId) => {
     if (!cartItems[itemId]) {
@@ -23,19 +23,34 @@ const StoreContextProvider = (props) => {
     let totalAmount = 0;
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
-        let itemInfo = food_list.find((p) => p._id === item);
+        let itemInfo = foodList.find((p) => p._id === item);
         totalAmount += itemInfo.price * cartItems[item];
       }
     }
     return totalAmount;
   };
   const deliveryFee = getTotalCartAmount() ? 2 : 0;
+
+  const fetcFoodList = async () => {
+    const response = await axios.get(`${baseUrl}/api/food/list`);
+    setFoodList(response.data.data);
+  };
+
+  useEffect(() => {
+    async function loadData() {
+      await fetcFoodList();
+      if (localStorage.getItem("token")) {
+        setToken(localStorage.getItem("token"));
+      }
+    }
+    loadData();
+  }, []);
   const contextValue = {
     token,
     setToken,
     baseUrl,
     deliveryFee,
-    food_list,
+    foodList,
     cartItems,
     setCartItems,
     addToCart,

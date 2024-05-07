@@ -12,11 +12,7 @@ const Navbar = ({ setShowLogin }) => {
     setToken("");
     navigate("/");
   };
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setToken(localStorage.getItem("token"));
-    }
-  }, []);
+
   return (
     <div className="navbar">
       <Link to="/">
