@@ -11,7 +11,6 @@ const Cart = () => {
     deliveryFee
   } = useContext(StoreContext);
   const navigate = useNavigate();
-  console.log(navigate);
 
   return (
     <div className="cart">

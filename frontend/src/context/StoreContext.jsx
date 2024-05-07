@@ -5,7 +5,8 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-
+  const [token, setToken] = useState("");
+  const baseUrl = import.meta.env.VITE_BASE_ENDPOINT;
   const addToCart = (itemId) => {
     if (!cartItems[itemId]) {
       setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
@@ -30,6 +31,9 @@ const StoreContextProvider = (props) => {
   };
   const deliveryFee = getTotalCartAmount() ? 2 : 0;
   const contextValue = {
+    token,
+    setToken,
+    baseUrl,
     deliveryFee,
     food_list,
     cartItems,
